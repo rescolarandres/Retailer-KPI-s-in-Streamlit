@@ -57,7 +57,7 @@ An API was created in python and deployed in GCP App Engine, to provide the stre
 
 Major frameworks/libraries used to bootstrap the project:
 
-* [![Python][Python.com]][Python-url]
+* ![Python]
 * [![Bootstrap][Bootstrap.com]][Bootstrap-url]
 * [![JQuery][JQuery.com]][JQuery-url]
 
@@ -128,5 +128,5 @@ Use this space to list resources you find helpful and would like to give credit 
 [Bootstrap-url]: https://getbootstrap.com
 [JQuery.com]: https://img.shields.io/badge/jQuery-0769AD?style=for-the-badge&logo=jquery&logoColor=white
 [JQuery-url]: https://jquery.com 
-![Python.com](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
+[Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
 ![alt text](https://github.com/rescolarandres/Retailer-KPI-s-in-Streamlit/blob/main/arquitecture.png)
