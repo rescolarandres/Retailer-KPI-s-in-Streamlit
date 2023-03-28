@@ -10,8 +10,9 @@
 *** https://www.markdownguide.org/basic-syntax/#reference-style-links
 -->
 
-<!-- PROJECT LOGO -->
+
 <br />
+<!-- PROJECT LOGO -->
 <div align="center">
   <a href="">
     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/H%26M-Logo.svg/640px-H%26M-Logo.svg.png" alt="Logo" width="100" height="80">
@@ -19,7 +20,6 @@
 
   <h3 align="center">H&M Capstone</h3>
 </div>
-
 
 
 <!-- TABLE OF CONTENTS -->
@@ -52,9 +52,6 @@
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
-
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
-
 For my second term capstone project, several Key Performance Indicators had to be obtained with pandas, given real H&M data. However, given that this was a capstone project, and trying to implement all the knowledge gained so far about Python, Javascript and Data Analytics/Pandas, I decided that the best way to integrate all this stacks was through an E commerce platform.
 
 The main components of the project are:
@@ -64,15 +61,23 @@ The main components of the project are:
 * A Database to provide the API, and serve the backend server. The database has tables storing the H&M data and application users.
 
 ### E-Commerce Website
-This service provides the web simulating the H&M shop. It uses flask in the back end, and Javascript for the front end. The servers obtain the data directly from the database (for the sake of showing porpoises), using MySQL. The back end provides data and templates for the following pages:
+This service provides the web simulating the H&M shop. It uses flask in the back end, and Javascript for the front end, and it's deployed in GCP App Enngine. The servers obtain the data directly from the database (for the sake of showing porpoises), using MySQL. The backend (server.py) provides data and templates for the following pages:
  * Index: that shows the catalog and obtains the categories of the articles displayed.
  * Login: logs the user through forms and opens a session for the user. If the user is an admin, a page showing the KPI's will be shown, if not it redirects back to the index
  * Register: to register new users. The passwords of the users are hashed in the database.
  * Search: provides article search functionality. Through a form, the item is queried in the database, and its result sent to the search page.
  * Cart: renders the cart page.
 
-For the front end and Javascript, visit the following <a href="https://github.com/rescolarandres/E-commerce-platform-in-Python-and-JS">link</a>
+For the front end and Javascript description, visit the following <a href="https://github.com/rescolarandres/E-commerce-platform-in-Python-and-JS">link</a>
 
+
+### Streamlit application
+This service provides the user a simple way of interacting with the data in a streamlit application. It is coded in python and deployed in GCP App Engine. This service obtains the data from the API, through json files that are then converted to pandas dataframes. The application is composed of two main files:
+1. Filters.py: a class to compute filters to add to the application. It is in this class, where the data is loaded and filtered depending on the users filters.
+2. streammlit.py: which computes the kpi's (one per function) with pandas, and displays them in the application.
+<img src="https://github.com/rescolarandres/Retailer-KPI-s-in-Streamlit/blob/main/streamlit.png">
+
+### API
 
 
 ### Built With
