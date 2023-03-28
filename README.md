@@ -14,23 +14,10 @@
 <br />
 <div align="center">
   <a href="">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/H%26M-Logo.svg/640px-H%26M-Logo.svg.png" alt="Logo" width="80" height="80">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/H%26M-Logo.svg/640px-H%26M-Logo.svg.png" alt="Logo" width="100" height="80">
   </a>
 
-  <h3 align="center">Best-README-Template</h3>
-
-  <p align="center">
-    An awesome README template to jumpstart your projects!
-    <br />
-    <a href="https://github.com/othneildrew/Best-README-Template"><strong>Explore the docs »</strong></a>
-    <br />
-    <br />
-    <a href="https://github.com/othneildrew/Best-README-Template">View Demo</a>
-    ·
-    <a href="https://github.com/othneildrew/Best-README-Template/issues">Report Bug</a>
-    ·
-    <a href="https://github.com/othneildrew/Best-README-Template/issues">Request Feature</a>
-  </p>
+  <h3 align="center">H&M Capstone</h3>
 </div>
 
 
@@ -68,18 +55,23 @@
 
 [![Product Name Screen Shot][product-screenshot]](https://example.com)
 
-There are many great README templates available on GitHub; however, I didn't find one that really suited my needs so I created this enhanced one. I want to create a README template so amazing that it'll be the last one you ever need -- I think this is it.
+For my second term capstone project, several Key Performance Indicators had to be obtained with pandas, given real H&M data. However, given that this was a capstone project, and trying to implement all the knowledge gained so far about Python, Javascript and Data Analytics/Pandas, I decided that the best way to integrate all this stacks was through an E commerce platform.
 
-Here's why:
-* Your time should be focused on creating something amazing. A project that solves a problem and helps others
-* You shouldn't be doing the same tasks over and over like creating a README from scratch
-* You should implement DRY principles to the rest of your life :smile:
+The main components of the project are:
+* An e-commerce web, that uses the data given by H&M to simulate a real retailer. 
+* A web application with streamlit to display and treat the KPI's based on filters.
+* An API that connects the database with the streamlit application.
+* A Database to provide the API, and serve the backend server. The database has tables storing the H&M data and application users.
 
-Of course, no one template will serve all projects since your needs may be different. So I'll be adding more in the near future. You may also suggest changes by forking this repo and creating a pull request or opening an issue. Thanks to all the people have contributed to expanding this template!
+### E-Commerce Website
+This service provides the web simulating the H&M shop. It uses flask in the back end, and Javascript for the front end. The servers obtain the data directly from the database (for the sake of showing porpoises), using MySQL. The back end provides data and templates for the following pages:
+ * Index: that shows the catalog and obtains the categories of the articles displayed.
+ * Login: logs the user through forms and opens a session for the user. If the user is an admin, a page showing the KPI's will be shown, if not it redirects back to the index
+ * Register: to register new users. The passwords of the users are hashed in the database.
+ * Search: provides article search functionality. Through a form, the item is queried in the database, and its result sent to the search page.
+ * Cart: renders the cart page.
 
-Use the `BLANK_README.md` to get started.
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+For the front end and Javascript, visit the following <a href="https://github.com/rescolarandres/E-commerce-platform-in-Python-and-JS">link</a>
 
 
 
@@ -164,8 +156,8 @@ See the [open issues](https://github.com/othneildrew/Best-README-Template/issues
 
 
 
-<!-- CONTRIBUTING -->
-## Contributing
+<!-- Architecture -->
+## Architecture
 
 Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
@@ -179,16 +171,6 @@ Don't forget to give the project a star! Thanks again!
 5. Open a Pull Request
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
-<!-- LICENSE -->
-## License
-
-Distributed under the MIT License. See `LICENSE.txt` for more information.
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 
 
 <!-- CONTACT -->
