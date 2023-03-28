@@ -1,0 +1,174 @@
+from sqlalchemy import create_engine
+import pandas as pd
+import streamlit as st
+import plotly.express as px
+from Filters import Filters
+
+
+# Create Streamlit and add filters
+df_filtered = Filters()
+
+# Streamlit features
+st.title('H&M KPIs')
+
+
+# KPI'S
+pd.options.plotting.backend = "plotly"
+
+
+## 1. Average earnings from clubmembers and not clubmembers along time
+def avg_ear_status(df_customers, df_transactions):
+    aux_df = pd.merge(df_customers,df_transactions,how='inner',on='customer_id')
+    # Date to datetime
+    aux_df['t_dat'] = pd.to_datetime(aux_df['t_dat'])
+    # Goupby Club member and t_dat to obtaining the mean
+    aux_df = aux_df.groupby(['t_dat','club_member_status'])['price'].mean().reset_index()
+    aux_df = aux_df.set_index('t_dat')
+    aux_df = aux_df.pivot_table('price',index=['t_dat'], columns='club_member_status').reset_index()
+    aux_df = aux_df.set_index('t_dat')
+
+    st.subheader('1. Average Sales per date and status')
+    kpi1, kpi2, kpi3 = st.columns(3)
+    kpi1.metric(
+    label = "Maximum average earnings",
+    value = round(aux_df.max().max(),5) )
+    kpi2.metric(
+        label= "Date",
+        value = str(aux_df.reset_index().max().t_dat)[:10]
+    )
+    kpi3.metric(
+        label = "Status",
+        value = aux_df.max().idxmax()
+    )
+    st.plotly_chart(px.line(aux_df))
+    with st.expander("See explanation"):
+        st.write("""Average price per purchuase along time. The data is grouped by the club status of the customers, and the mean quantity of each status is computed.
+                 This sales indicator offers an important insight, as if the whole dataset was displayed, a large peak in the Left-Club line would have been observed,
+                meaning that those members spend larger quantities in purchuases that the club members and pre club members.""")
+        st.image("static/img/avgdate.png")
+ 
+avg_ear_status(df_filtered.df_customers, df_filtered.df_transactions)
+
+## 2. Return Rate
+def return_rate(df_transactions):
+    # Groupby customer_id counting how many times each customer has done a purchuase
+    df_transactions = df_transactions.rename(columns={'article_id':'Number_of_purchuases'})
+    aux_df = df_transactions.groupby(['customer_id']).aggregate({'price':'count', 'Number_of_purchuases':'count'})
+    # Group by number of purchuases and sum
+    aux_df = aux_df.groupby(['Number_of_purchuases'])['price'].agg(['count'])
+    #  Obtain percentages
+    aux_df['percentage'] = aux_df['count']/aux_df.sum()[0]*100
+
+    st.subheader('2.Return rate of customers')
+    kpi1, kpi2 = st.columns(2)
+    kpi1.metric(
+    label = "Most common number of sales per customer",
+    value = aux_df.index[aux_df.reset_index()['percentage'].idxmax()])
+    kpi2.metric(
+        label= "Percentage",
+        value =  round(aux_df.reset_index()['percentage'].max(),5))
+    fig6 = px.pie(aux_df.reset_index(), values='percentage', names='Number_of_purchuases')
+    fig6.update_traces(textposition='inside', textinfo='percent+label')
+
+    st.plotly_chart(fig6, use_container_width=True)
+
+    with st.expander("See explanation"):
+        st.write("""Return rate. One of the most important KPI's, as it measures the return of customers. It was obtained by means
+        of counting the number of transactions per customer, then grouping by those number of transactions, and computing the percentage of 
+        this number with respect to the total. It can be seen that the Return rate is around 70%, since at least 7/10 customers repeat buying at H&M. """)
+
+return_rate(df_filtered.df_transactions)
+
+## 3. Distribution of sales channels and customer age
+def channel_age(df_customers, df_transactions, checkbox):
+    aux_df = pd.merge(df_customers,df_transactions,how='inner',on='customer_id')
+    # First, the ages are rounded to the nearest decen to be more easily tracked
+    if checkbox:
+        aux_df['age'] = round(aux_df['age'],-1)
+    aux_df = aux_df.groupby(['age','sales_channel_id']).agg({'customer_id':'count'})
+    aux_df = aux_df.pivot_table('customer_id',index=['age'], columns='sales_channel_id')
+    fig = aux_df.plot.bar()
+    st.subheader("3. Distribution of sales channels and customer age")
+    st.plotly_chart(fig, use_container_width=True)
+    with st.expander("See explanation"):
+        st.write("""Count of customers by age group and sales channel. This KPI offers a couple of interesting insights: """)
+        st.write("1. Sales channel 2, which presumably is the online channel, is the backbone of the sales.") 
+        st.write("2. The sales are more abundant in people ranging from 20-50, with a higher percentage of this sales being made online") 
+
+channel_age(df_filtered.df_customers, df_filtered.df_transactions, df_filtered.checkbox)
+
+## 4 Gender distribution from clothes bought
+def gender(df_articles, df_transactions, df_customers):
+    # Double merge to merge all datasets and link articles with customers
+    aux_df = pd.merge(df_articles,df_transactions,how='inner',on='article_id')
+    aux_df = pd.merge(aux_df,df_customers,how='inner',on='customer_id')
+    # Now that we know there is 4 groups, we will filter by ladies and men
+    aux_df = aux_df[(aux_df.index_group_name == 'Menswear') | (aux_df.index_group_name == 'Ladieswear')]
+    aux_df = aux_df.groupby(['index_group_name'])['article_id'].count().reset_index()
+    fig = px.pie(aux_df, values='article_id', names='index_group_name')
+    st.subheader('4. Gender distribution')
+    st.plotly_chart(fig, use_container_width=True)
+    with st.expander("See explanation"):
+        st.write("""Percentages sales made to women/men. There was no gender information included in the original dataset,
+         thus what was done, was: using the transactions, obtain the articles of this transactions, and get the index group of those articles
+          (Ladies or Men) and from that, obtaining an estimation of the gender distribution in our sales. It can be clearly seen that H&M is highly 
+          oriented to women, no matter the age/sales channel/price. """)
+
+gender(df_filtered.df_articles, df_filtered.df_transactions, df_filtered.df_customers)
+
+## 5 Total earnings per color
+def earnings_color(df_articles, df_transactions):
+    aux_df = pd.merge(df_articles,df_transactions,on='article_id',how='inner')
+    fig4 = px.pie(aux_df.groupby(['colour_group_name'])['price'].sum().to_frame().reset_index(), values='price', names='colour_group_name')
+    fig4.update_traces(textposition='inside', textinfo='percent+label')
+    st.subheader('5. Earnings per color')
+    st.plotly_chart(fig4, use_container_width=True)
+    with st.expander("See explanation"):
+        st.write("""Sum of earnings per color. What is the color trend right now? What was done in this KPI was to obtain all the articles purchuased
+         and with the color of the article obtain the percentage of sales that that color represents. Black is unmatched """)
+
+earnings_color(df_filtered.df_articles, df_filtered.df_transactions)
+
+## 6. Product Type per Age Group
+def type_age(df_articles, df_transactions, df_customers, checkbox):
+    # Double merge to merge all datasets and link articles with customers
+    aux_df = pd.merge(df_articles,df_transactions,how='inner',on='article_id')
+    aux_df = pd.merge(aux_df,df_customers,how='inner',on='customer_id')
+
+    # Group by ages group of decades (easier to see)
+    if checkbox:
+        aux_df['age'] = round(aux_df['age'],-1)
+
+    # Group by product type and age
+    aux_df = aux_df.groupby(['age','product_type_name']).count()
+    # change NAN with 0
+    aux_df = aux_df.fillna(value=0)
+    aux_df = aux_df.rename(columns={'article_id':'Number of articles'})
+
+    st.subheader('6. Sales per product and age')
+    kpi1, kpi2, kpi3 = st.columns(3)
+    kpi1.metric(
+    label = "Maximum products sold",
+    value = aux_df.max().max()
+    )
+    kpi2.metric(
+        label= "Age",
+        value = aux_df.idxmax()[0][0]
+    )
+    kpi3.metric(
+        label = "Product",
+        value = aux_df.idxmax()[0][1]
+    )
+
+    fig5 = px.bar(aux_df.reset_index(), x='age', y='Number of articles', color='product_type_name')
+    st.plotly_chart(fig5)
+
+    with st.expander("See explanation"):
+        st.write("""Product type. In this KPI, the products sold are grouped with the customer information such as the age of the customer,
+        and then grouped by the type of product. If a more detailed insight is required in terms of the age, the Group Ages by Decade checkbox offers a 
+        very nice feature, that decomposes the ages group, changing the results quite a bit. From this KPI, it can be seen that trousers are the most sold 
+        product across all ages, followed by underwear. Another interesting feature is the sales of Cardigans to people 49 years old (don't ask me why).""")
+
+
+type_age(df_filtered.df_articles, df_filtered.df_transactions,df_filtered.df_customers, df_filtered.checkbox)
+    
