@@ -11,9 +11,9 @@ class Filters():
         self.sidebar.write('Filters')
         self.checkbox = st.sidebar.checkbox('Group Ages by Decades',value=True)
 
-        self.df_transactions = self.load_data('https://api-dot-nth-canyon-378812.oa.r.appspot.com', '/api/v1/transactions',headers={"Authorization": "Bearer xxxxxx"})
-        self.df_articles = self.load_data('https://api-dot-nth-canyon-378812.oa.r.appspot.com', '/api/v1/articles',headers={"Authorization": "Bearer xxxxxx"})
-        self.df_customers = self.load_data('https://api-dot-nth-canyon-378812.oa.r.appspot.com', '/api/v1/customers',headers={"Authorization": "Bearer xxxxxx"})
+        self.df_transactions = self.load_data('https://api-dot-nth-canyon-378812.oa.r.appspot.com', '/api/v1/transactions',headers={"Authorization": ""})
+        self.df_articles = self.load_data('https://api-dot-nth-canyon-378812.oa.r.appspot.com', '/api/v1/articles',headers={"Authorization": ""})
+        self.df_customers = self.load_data('https://api-dot-nth-canyon-378812.oa.r.appspot.com', '/api/v1/customers',headers={"Authorization": ""})
 
         # Apply users filters
         self.status_filter()
