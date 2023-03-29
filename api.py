@@ -4,8 +4,8 @@ from flask_restx import Api, Namespace, Resource
 import pandas as pd
 
 user = "root"
-passw = 'capstonedb'
-host = "34.175.44.34"
+passw = ''
+host = ""
 database = "main"
 
 app = Flask(__name__)
