@@ -46,6 +46,7 @@ For the front end and Javascript description, visit the following <a href="https
 This service provides the user a simple way of interacting with the data in a streamlit application. It is coded in python and deployed in GCP App Engine. This service obtains the data from the API, through json files that are then converted to pandas dataframes. The application is composed of two main files:
 1. Filters.py: a class to compute filters to add to the application. It is in this class, where the data is loaded and filtered depending on the users filters.
 2. streammlit.py: which computes the kpi's (one per function) with pandas, and displays them in the application.
+<b>To access the service through the E-Commerce website, you will need to login as username = rescolar@students.ie.edu, password=non_hashed </b>
 <img src="https://github.com/rescolarandres/Retailer-KPI-s-in-Streamlit/blob/main/streamlit.png">
 
 ### API
@@ -54,6 +55,7 @@ An API was created in python and deployed in GCP App Engine, to provide the stre
 
 <!-- Architecture -->
 ## Architecture
+A high level architecture of the different microservices is shown below:
 ![alt text](https://github.com/rescolarandres/Retailer-KPI-s-in-Streamlit/blob/main/arquitecture.png)
 
 ### Built With
@@ -69,25 +71,6 @@ Major frameworks/libraries used to bootstrap the project:
 * ![MySQL](https://img.shields.io/badge/mysql-%2300f.svg?style=for-the-badge&logo=mysql&logoColor=white)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
-
-<!-- ROADMAP -->
-## Roadmap
-
-- [x] Add Changelog
-- [x] Add back to top links
-- [ ] Add Additional Templates w/ Examples
-- [ ] Add "components" document to easily copy & paste sections of the readme
-- [ ] Multi-language Support
-    - [ ] Chinese
-    - [ ] Spanish
-
-See the [open issues](https://github.com/othneildrew/Best-README-Template/issues) for a full list of proposed features (and known issues).
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 
 
 
