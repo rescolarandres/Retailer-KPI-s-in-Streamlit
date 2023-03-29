@@ -39,6 +39,7 @@ This service provides the web simulating the H&M shop. It uses flask in the back
  * Register: to register new users. The passwords of the users are hashed in the database.
  * Search: provides article search functionality. Through a form, the item is queried in the database, and its result sent to the search page.
  * Cart: renders the cart page.
+ * Logout: deletes the session of the user.
 
 For the front end and Javascript description, visit the following <a href="https://github.com/rescolarandres/E-commerce-platform-in-Python-and-JS">link</a>
 
