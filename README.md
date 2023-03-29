@@ -19,7 +19,7 @@
   </a>
 
   <h3 align="center">H&M Capstone</h3>
-  <p href = "https://ecommerce-dot-nth-canyon-378812.oa.r.appspot.com/"> Link to the website </p>
+  <a href = "https://ecommerce-dot-nth-canyon-378812.oa.r.appspot.com/"> hmcapstone.com</a>
 </div>
 
 <!-- ABOUT THE PROJECT -->
