@@ -6,9 +6,9 @@ import json
 
 def connect_tcp_socket() -> sqlalchemy.engine.base.Engine:
     """ Initializes a TCP connection pool for a Cloud SQL instance of MySQL. """
-    db_host = ''
+    db_host = '34.175.44.34'
     db_user = 'root'
-    db_pass = ''
+    db_pass = 'capstonedb'
     db_name = 'main'
     db_port = 3306
 
@@ -25,9 +25,9 @@ def connect_tcp_socket() -> sqlalchemy.engine.base.Engine:
     return engine
 
 def legacy_to_json(rows):
+    """Function to turn SQL legacy rows into json"""
     list = [row.section_name for row in rows]
     return json.dumps(list)
-
 
 hm = Flask(__name__)
 hm.config["SECRET_KEY"] = "super secret stuff"
@@ -36,6 +36,7 @@ engine = connect_tcp_socket()
 @hm.route("/")
 def index():
     with engine.connect() as connection:
+        # Queries for index page
         query_articles = f"""
                 SELECT DISTINCT articles.article_id, product_type_name, colour_group_name, detail_desc, ROUND(price,5) as price
                 FROM articles
@@ -72,16 +73,18 @@ def index():
             return render_template('index.html', articles=articles, men_categories = legacy_to_json(men_categories) ,
                             women_categories=  legacy_to_json(women_categories), babies_categories =  legacy_to_json(babies_categories),session = session)
         else:
-            
+            # Create a temporal session until login
             temp_session = {'email': 'Login'}
             return render_template('index.html', articles=articles, men_categories =legacy_to_json(men_categories) ,
                             women_categories=  legacy_to_json(women_categories), babies_categories =  legacy_to_json(babies_categories), session = temp_session)            
 
 @hm.route("/register", methods=["POST"])
 def handle_register():
-    password = request.form["passwordRegister"]
+    # Obtaining input from the forms
     email = request.form["email"]
-
+    password = request.form["passwordRegister"]
+    
+    # Password hashing for storing
     hashed_password = generate_password_hash(password=password)
 
     query = f"""
@@ -97,6 +100,7 @@ def handle_register():
 
 @hm.route("/login", methods=["POST"])
 def handle_login():
+    # Obtaining input from the forms
     email = request.form["email"]
     password = request.form["password"]
 
@@ -108,19 +112,22 @@ def handle_login():
 
     with engine.connect() as connection:
         user = connection.execute(text(query)).fetchone()
-
         password_matches = check_password_hash(user[1], password)
+
         if user and password_matches and user[2]:
-            # User is Admin
+            # User is Admin, render admin html
             session["email"] =user[0]
             return render_template('index_admin.html')
         else:
+            session["email"] =user[0]
             return redirect(url_for("index"))
 
 @hm.route("/search", methods=["POST"])
 def search():
+    # Obtain input from form
     item = request.form['itemToSearch']
 
+    # Search query
     query = f"""
             SELECT DISTINCT articles.article_id, product_type_name, colour_group_name, detail_desc, ROUND(price,5) as price
             FROM articles
@@ -130,6 +137,7 @@ def search():
             ORDER BY RAND ( )
             LIMIT 10;
             """
+    
     with engine.connect() as connection:
         items = connection.execute(text(query)).fetchall()
 
@@ -140,6 +148,7 @@ def search():
 
 @hm.route("/cart")
 def cart():
+    # Shopping cart is managed by the front end entirely
     return render_template('cart.html')
 
 @hm.route("/logout")
