@@ -1,4 +1,3 @@
-from sqlalchemy import create_engine
 import pandas as pd
 import streamlit as st
 import plotly.express as px
@@ -13,7 +12,6 @@ st.title('H&M KPIs')
 pd.options.plotting.backend = "plotly"
 
 # KPI'S
-
 ## 1. Average purchuase value from clubmembers and not clubmembers along time
 def avg_ear_status(df_customers, df_transactions):
     aux_df = pd.merge(df_customers,df_transactions,how='inner',on='customer_id')
@@ -122,7 +120,7 @@ def lifespan(df_transactions, df_customers):
     
     kp1, kpi2 = st.columns(2)
     kp1.metric(
-        label = "Average customer lifespan (Average Customer Lifespan)",
+        label = "Average customer lifespan (ACL)",
         value = str(acl)[:4] + ' hours'
     )
     st.plotly_chart(fig)
@@ -240,7 +238,6 @@ def type_age(df_articles, df_transactions, df_customers, checkbox):
         and then grouped by the type of product. If a more detailed insight is required in terms of the age, the Group Ages by Decade checkbox offers a 
         very nice feature, that decomposes the ages group, changing the results quite a bit. From this KPI, it can be seen that trousers are the most sold 
         product across all ages, followed by underwear. Another interesting feature is the sales of Cardigans to people 49 years old (don't ask me why).""")
-
 
 type_age(df_filtered.df_articles, df_filtered.df_transactions,df_filtered.df_customers, df_filtered.checkbox)
     
