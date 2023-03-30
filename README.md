@@ -53,7 +53,7 @@ This service provides the user a simple way of interacting with the data in a st
 
 ### API
 An API was created in python and deployed in GCP App Engine, to provide the streamlit application with the corresponding data. It has several endpoints to retrieve the data, and one endpoint to upload new tables to the CloudSQL database. The API requires authorization to be used. 
-<a href= "https://api-dot-nth-canyon-378812.oa.r.appspot.com/"> API Swagger </a>
+<a href= "https://api-dot-nth-canyon-378812.oa.r.appspot.com/"> Link to the API Swagger </a>
 <img src="https://github.com/rescolarandres/Retailer-KPI-s-in-Streamlit/blob/main/api.png">
 
 <!-- Architecture -->
