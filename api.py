@@ -4,8 +4,8 @@ from flask_restx import Api, Namespace, Resource
 import pandas as pd
 
 user = "root"
-passw = 'capstonedb'
-host = "34.175.44.34"
+passw = ''
+host = ""
 database = "main"
 
 app = Flask(__name__)
@@ -280,7 +280,7 @@ earnings = Namespace('Earnings',
     path='/api/v1')
 api.add_namespace(earnings)
 ## Earnings by status
-@merge_tables.route('/earnings/status')
+@earnings.route('/earnings/status')
 class get_earnings_status(Resource):
     def get(self):
         if "Authorization" not in request.headers:
@@ -300,7 +300,7 @@ class get_earnings_status(Resource):
                 return jsonify({'error': 'token provided is incorrect'})
 
 ## Earnings by color
-@merge_tables.route('/earnings/color')
+@earnings.route('/earnings/color')
 class get_earnings_color(Resource):
     def get(self):
         if "Authorization" not in request.headers:
@@ -320,7 +320,7 @@ class get_earnings_color(Resource):
                 return jsonify({'error': 'token provided is incorrect'})
 
 ## Earnings by date
-@merge_tables.route('/earnings/date')
+@earnings.route('/earnings/date')
 class get_earnings_date(Resource):
     def get(self):
         if "Authorization" not in request.headers:
